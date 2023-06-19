@@ -1,0 +1,12 @@
+Let f be
+
+    int square(int n)
+    {
+        return n * n;
+    }
+
+The result space of f are all squares represented as
+int {0, 1, 4, 9, ..., 46340**2}.
+The definition space are all numbers 
+{-46340, ..., 0, ..., 46340}.
+

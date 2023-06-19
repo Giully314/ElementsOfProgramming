@@ -1,0 +1,1 @@
+Let f be a regular procedure. Let x be an input/output object. Let y be the output of f with x as argument. If take z = x and call f(z) and get w as result then w will be equal to y.
