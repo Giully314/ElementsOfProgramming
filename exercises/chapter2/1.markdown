@@ -1,0 +1,29 @@
+    bool check_int_addition(int a, int b)
+    {
+        if (a < 0 && b < 0)
+        {
+            return a + b < 0;
+        }
+        else if (a > 0 && b > 0)
+        {
+            return a + b > 0;
+        }
+        return true;
+    }
+
+or using less comparisons but subtraction
+
+    bool check_int_addition(int a, int b)
+    {
+        if (a < 0)
+        {
+            return b >= std::numeric_limits<int>::min() - a;
+        }
+        if (a > 0)
+        {
+            return b <= std::numeric_limits<int>::max() - a;
+        }
+
+        // if a == 0 it is always safe.
+        return true;
+    }

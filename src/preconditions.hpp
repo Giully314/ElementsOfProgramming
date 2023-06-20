@@ -28,6 +28,9 @@ that have particular properties.
 #endif
 
 
+#include <limits>
+
+
 namespace eop
 {
 
@@ -40,12 +43,37 @@ namespace eop
 
     // ************************* PRECONDITIONS *********************************************
 
+    // Exercise 2.1
+    // Return true if the addition is safe to do, false otherwise.
+    bool check_int_addition(int a, int b)
+    {
+        if (a < 0 && b < 0)
+        {
+            return a + b < 0;
+        }
+        else if (a > 0 && b > 0)
+        {
+            return a + b > 0;
+        }
+
+
+        // This version has less comparisons
+        // if (a < 0)
+        // {
+        //     return b >= std::numeric_limits<int>::min() - a;
+        // }
+        // if (a > 0)
+        // {
+        //     return b <= std::numeric_limits<int>::max() - a;
+        // }
+
+        return true;
+    }
+
 
     // ************************* PRECONDITIONS *********************************************
 
 
-
-    
 } // namespace eop
 
 #endif 
