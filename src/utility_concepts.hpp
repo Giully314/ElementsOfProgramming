@@ -31,6 +31,8 @@ TODO:
 #include <concepts> 
 #include <type_traits>
 
+#include "type_traits.hpp"
+
 namespace eop
 {
     // ************************* UTILITY CONCEPTS *****************************************************
@@ -42,6 +44,10 @@ namespace eop
 
     template <typename T, typename ...Args>
     concept same_types = sizeof...(Args) == 0 || (std::same_as<T, Args> && ...);
+
+    template <typename F, typename P>
+    concept same_domain = std::same_as<domain_t<F>, domain_t<P>>;
+
 
     // ************************* UTILITY CONCEPTS *****************************************************
 } // namespace eop

@@ -21,6 +21,7 @@ I will use the standard library for basic concepts and type_traits to avoid to m
 
 */
 
+#include <type_traits>
 #include "mpl.hpp"
 
 namespace eop
@@ -31,7 +32,7 @@ namespace eop
     template <typename F, size_t I>
     struct input_type
     {
-        using type = extract_t<mpl::params_of_function_t<F>, I>;
+        using type = extract_t<params_of_function_t<F>, I>;
     };
 
     template <typename F, size_t I>
@@ -45,11 +46,11 @@ namespace eop
     template <typename F>
     struct domain
     {
-        using type = input_type_t<F, 0>;
+        using type = std::remove_cvref_t<input_type_t<F, 0>>;
     };
 
     template <typename F>
-    using domain_t = domain<F>::type;
+    using domain_t = typename domain<F>::type;
 
     //**************** DOMAIN ***********************
 

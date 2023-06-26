@@ -26,7 +26,7 @@ USAGE:
 #include <functional>
 #include <type_traits>
 #include "type_concepts.hpp"
-#include "utility_concepts.hpp"
+// #include "utility_concepts.hpp"
 
 namespace eop
 {
@@ -64,6 +64,7 @@ namespace eop
         using type = Head;
     };
 
+
     template <typename TList>
     using front_t = typename front<TList>::type;
 
@@ -91,7 +92,7 @@ namespace eop
     //************************   EXTRACT     ****************************
 
     template <typename TList, unsigned I>
-    struct extract : public extract<pop_front<TList>, I - 1>
+    struct extract : public extract<pop_front_t<TList>, I - 1>
     {
     };
 
@@ -208,7 +209,7 @@ namespace eop
 
     template <typename F, typename T, typename ...Args>
     struct homogeneous_params<F, typelist<T, Args...>> : 
-        public std::bool_constant<same_types<T, Args...>> {};
+        public std::bool_constant<(std::same_as<T, Args> && ...)> {};
 
         //(std::is_same_v<unqualify_type_t<T>, unqualify_type_t<Args>> && ...)> {};
 

@@ -86,6 +86,11 @@ namespace eop
     template <typename F>
     concept transformation = operation<F> && unary_procedure<F> && std::integral<distance_type_t<F>>;
 
+
+    template <typename F>
+    concept action = operation<F> && unary_procedure<F> && std::integral<distance_type_t<F>> && 
+                        std::is_lvalue_reference_v<domain_t<F>>;
+
 } // namespace eop
 
 
