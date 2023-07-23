@@ -19,9 +19,9 @@ namespace eop
     template <typename T1, typename T2>
     struct Pair
     {
-        Triple() = default;
+        Pair() = default;
 
-        Triple(const T1& f, const T2& s) : first(f), second(s)
+        Pair(const T1& f, const T2& s) : first(f), second(s)
         {
 
         }

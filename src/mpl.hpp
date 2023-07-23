@@ -26,7 +26,7 @@ USAGE:
 #include <functional>
 #include <type_traits>
 #include "type_concepts.hpp"
-// #include "utility_concepts.hpp"
+
 
 namespace eop
 {
@@ -187,6 +187,24 @@ namespace eop
     //************************** REGULAR PARAMS ***************************
 
 
+    //************************** REMCV REGULAR PARAMS ***************************
+
+    template <typename F, typename TList>
+    struct remcvref_regular_params;
+
+    template <typename F, typename ...Args>
+    struct remcvref_regular_params<F, typelist<Args...>> : public std::false_type {};
+    
+    template <typename F, typename ...Args>
+        requires (regular<std::remove_cvref_t<Args>> && ...)
+    struct remcvref_regular_params<F, typelist<Args...>> : public std::true_type {};
+
+    template <typename F>
+    inline constexpr bool remcvref_regular_rmparams_v = remcvref_regular_params<F, params_of_function_t<F>>::value;
+
+    //************************** REMCV REGULAR PARAMS ***************************
+
+
     //************************** DIRECT PARAMS ****************************
 
     template <typename F, typename TList>
@@ -209,7 +227,8 @@ namespace eop
 
     template <typename F, typename T, typename ...Args>
     struct homogeneous_params<F, typelist<T, Args...>> : 
-        public std::bool_constant<(std::same_as<T, Args> && ...)> {};
+        public std::bool_constant<
+            (std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<Args>> && ...)> {};
 
         //(std::is_same_v<unqualify_type_t<T>, unqualify_type_t<Args>> && ...)> {};
 
@@ -225,6 +244,24 @@ namespace eop
     inline constexpr bool homogeneous_params_v = homogeneous_params<F, params_of_function_t<F>>::value;
 
     //************************** HOMOGENEOUS PARAMS ******************************
+
+
+
+    //*************************** OUPUT TYPES ************************************
+
+    template <typename TList> 
+    struct at_least_one_reference;
+
+    template <typename ...Args> 
+    struct at_least_one_reference<typelist<Args...>> : 
+        public std::bool_constant<(std::is_lvalue_reference_v<Args> || ...)>
+    {};
+
+
+    template <typename TList>
+    inline constexpr bool at_least_one_reference_v = at_least_one_reference<TList>::value;
+
+    //*************************** OUPUT TYPES ************************************
 
 } // namespace eop
 

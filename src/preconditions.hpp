@@ -36,6 +36,44 @@ namespace eop
 
     // ************************ PROPERTIES *************************************************
 
+    /*
+    property(op: binary_operation)
+    associative: op
+        op -> for each a, b, c £ domain(op) : op(op(a, b), c) = op(a, op(b, c))
+    */
+
+    /*
+    property(op: binary_operation)
+    commutative: op
+        op -> for each a, b £ domain(op) : op(a, b) = op(b, a)
+    */
+
+    /*
+    left distributive and right distributive.
+    property(op1: binary_operation, op2: binary_operation)
+    distributive: op1, op2 
+        domain(op1) = domain(op2) and codomain(op1) = codomain(op2);
+        op1, op2 -> for each a, b, c £ domain(op1) : op1(a, op2(b, c)) = op2(op1(a, b), op1(a, c)) 
+    */
+
+    /*
+    property(r: relation)
+    transitive: r
+        r -> if r(a, b) && r(b, c) then r(a, c) 
+    */
+
+    /*
+    property(r: relation)
+    total_ordering: r
+        r -> transitive && trichotomy law (r(a, b), r(b, a), a = b)             
+    */
+
+    /*
+    property(r: relation)
+    weak_ordering: r
+        r -> transitive && trichotomy law on an equivalence relation e (r(a, b), r(b, a), e(a,b))             
+    */
+
 
     // ************************ PROPERTIES *************************************************
 
