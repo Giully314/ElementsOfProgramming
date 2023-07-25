@@ -1,5 +1,4 @@
-#ifndef FUNCTION_CONCEPTS_HPP
-#define FUNCTION_CONCEPTS_HPP
+#pragma once
 
 /*
 function_concepts.hpp
@@ -138,16 +137,5 @@ namespace eop
     // Property: transitive.
     template <typename F>
     concept transitive_relation = relation<F>;
-
-    // Property: weak ordering.
-    template <typename F>
-    concept weak_ordering_relation = relation<F>;
-
-    // Property: total ordering.
-    template <typename F>
-    concept total_ordering_relation = relation<F>;
 } // namespace eop
 
-
-
-#endif

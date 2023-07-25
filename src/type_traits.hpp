@@ -84,6 +84,22 @@ namespace eop
     //**************** DISTANCE TYPE ******************
 
 
+    //**************** QUOTIENT TYPE ******************
+
+    // TODO: make the distance type based on the sizeof the domain of F.
+
+    template <typename T>
+    struct quotient_type
+    {
+        using type = int;
+    };
+
+    template <typename T>
+    using quotient_type_t = quotient_type<T>::type; 
+
+    //**************** QUOTIENT TYPE ******************
+
+
     //**************** OUTPUT ARGS ********************
 
 

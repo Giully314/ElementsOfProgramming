@@ -3,6 +3,7 @@
 
 
 #include <concepts> 
+#include "algebraic_concepts.hpp"
 
 namespace eop
 {
@@ -16,14 +17,14 @@ namespace eop
         static constexpr
         bool is_odd(I n)
         {
-            return n & I(1);
+            return n & I{1};
         }
 
         template <integer I>
         static constexpr
         bool is_even(I n)
         {
-            return !is_odd(n);
+            return !is_odd{n};
         }
 
 
@@ -31,21 +32,29 @@ namespace eop
         static constexpr
         I divide_by_2(I n)
         {
-            return n >> I(1);
+            return n >> I{1};
         }
 
         template <integer I>
         static constexpr
         I multiply_by_2(I n)
         {
-            return n << I(1);
+            return n << I{1};
         }
 
         template <integer I>
         static constexpr
         I half_nonnegative(I n)
         {
-            return n >> I(1);
+            return n >> I{1};
+        }
+
+
+        template <integer I>
+        static constexpr
+        I half(I n)
+        {
+            return n / I{2};
         }
 
 
@@ -53,35 +62,49 @@ namespace eop
         static constexpr
         bool positive(I n)
         {
-            return n > I(0);
+            return n > I{0};
         }
 
         template <integer I>
         static constexpr
         bool negative(I n)
         {
-            return n < I(0);
+            return n < I{0};
         }
 
         template <integer I>
         static constexpr
         bool is_zero(I n)
         {
-            return n == I(0);
+            return n == I{0};
         }
 
         template <integer I>
         static constexpr
         bool is_one(I n)
         {
-            return n == I(1);
+            return n == I{1};
         }
 
+
+        template <integer I>
+        static constexpr
+        I successor(I n)
+        {
+            return n + I{1};
+        }
 
         // template <integer I>
         // static constexpr
         // I binary_scale_
         
+        template <ordered_additive_semigroup I>
+        static constexpr
+        I abs(const I& n)
+        {
+            if (n < I{0}) return -n;
+            return n;
+        }
 
     };
 

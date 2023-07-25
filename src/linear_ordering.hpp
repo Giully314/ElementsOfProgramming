@@ -15,8 +15,9 @@ so we can write a better algorithm using the assumption.
 
 */
 
-#include "function_concepts.hpp"
 #include "type_traits.hpp"
+#include "function_concepts.hpp"
+#include "ordering_concepts.hpp"
 
 namespace eop
 {   

@@ -6,11 +6,43 @@ algebraic_concepts.hpp
 PURPOSE:
 
 CONCEPTS:
+    magma:              a closed set under an operation.
+    commutative_magma:  a closed set under a commutative operation.
+
+    semigroup:                  a magma with an associative operation.
+    commutative_semigroup:      a magma with an associative and commutative operation.
+    additive_semigroup:         a commutative semigroup with + as operator.
+    multiplicative_semigroup:   a semigroup with * as operator.
+
+    monoid:                 a semigroup with an identity element.
+    commutative_monoid:     a commutative semigroup with an identity element.
+    additive_monoid:        a commutative_monoid with + as operator.
+    multiplicative_monoid:  a monoid with * as operator.
+
+    group:                  a monoid 
+    commutative_group:
+    additive_group:
+    multiplicative_group:
+
+    semiring:
+    commutative_semiring:
+
+    ring:
+    commutative_ring:
+
+    semimodule:
+
+    ordered_additive_semigroup:
+    ordered_additive_monoid:
+    ordered_additive_group:
+    cancellable_monoid:
 
 
 DESCRIPTION:
     The algebraic concepts try to model the algebraic structures studied in universal algebra 
     https://en.wikipedia.org/wiki/Universal_algebra .
+
+    One thing to note is that the definitions are partial because of the finite memory of the computer.
 
 */ 
 
@@ -20,6 +52,7 @@ DESCRIPTION:
 #include "type_traits.hpp"
 #include "type_concepts.hpp"
 #include "function_concepts.hpp"
+#include "ordering_concepts.hpp"
 #include "algebraic_operations.hpp"
 
 namespace eop
@@ -124,7 +157,46 @@ namespace eop
                             };
 
 
-    
+    // TODO: module concept 
     
 
+    template <typename T>
+    concept ordered_additive_semigroup = additive_semigroup<T> && totally_ordered<T> && requires (T a, T b, T c)
+    {
+        /* if */ {a < b}; /* then */ {a + c < b + c};
+    };
+
+    template <typename T>
+    concept ordered_additive_monoid = ordered_additive_semigroup<T> && additive_monoid<T>;
+
+    template <typename T>
+    concept ordered_additive_group = ordered_additive_monoid<T> && additive_group<T>;
+
+
+    template <typename T>
+    concept cancellable_monoid = ordered_additive_monoid<T> && requires (T a, T b)
+    {
+        { a - b } -> std::same_as<T>;
+        
+        // b <= a -> a - b is defined and (a - b) + b = a 
+    };
+
+
+    template <typename T>
+    concept archimedean_monoid = cancellable_monoid<T> && requires (T a, T b)
+    {
+        // Has quotient type = int
+        typename quotient_type_t<T>;
+        requires std::signed_integral<quotient_type_t<T>>;
+        
+        // for every a >= 0 and b > 0 requires slow_remainder(a, b) to terminate. 
+    };
+
+
+    template <typename T>
+    concept halvable_monoid = archimedean_monoid<T> && requires (T a)
+    {
+        // for every a, b, b > 0 and a = b + b then a / 2 = b
+        {a / 2} -> std::same_as<T>;
+    };
 } // namespace eop
