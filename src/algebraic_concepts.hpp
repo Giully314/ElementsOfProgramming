@@ -199,4 +199,12 @@ namespace eop
         // for every a, b, b > 0 and a = b + b then a / 2 = b
         {a / 2} -> std::same_as<T>;
     };
+
+
+    template <typename T>
+    concept euclidean_monoid = archimedean_monoid<T> && requires (T a, T b)
+    {
+        // for every a > 0 and b > 0, subtractive_gcd_non_zero(a, b) terminates.
+        { true };   
+    };
 } // namespace eop
