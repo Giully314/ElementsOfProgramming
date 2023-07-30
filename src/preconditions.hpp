@@ -75,6 +75,46 @@ namespace eop
     */
 
 
+
+    /*
+    property(I: iterator)
+    weak_range: I x distance_type(i)
+        (f, n) -> (i £ distance_type))
+            (0 <= i <= n) -> successor^i(f) is defined
+
+    */
+
+
+    /*
+    property(I: iterator)
+    counted_range: I x distance_type(i)
+        (f, n) -> (i,j £ distance_type))
+            weak_range(f, n) && 
+                (0 <= i < j <= n) -> successor^i(f) != successor^j(f)
+    */
+
+
+    /*
+    property(I: iterator)
+    bounded_range: I x I
+        (f, l) -> there exists k s.t. counted_range(f, k) && successor^k(f) = l
+    */
+
+    /*
+    property(I: readalbe)
+        requires iterator(I)
+    readable_bound_range: I x I
+        (f, l) -> bounded_range(f, l) && i £ [f, l) source(i) is defined
+    */
+
+
+    /*
+    property(Op: binary operation)
+    partially_associative: Op
+        op -> if op(a, b) && op(b, c) are defined then
+                op(op(a, b), c) && op(a, op(b, c)) are defined and are equal       
+    */
+   
     // ************************ PROPERTIES *************************************************
 
 

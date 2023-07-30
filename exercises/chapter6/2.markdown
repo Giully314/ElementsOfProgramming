@@ -1,0 +1,16 @@
+
+
+        // Precondition: readable_bounded_range(f, l)
+        template <readable_iterator I, unary_predicate P, iterator J>
+            requires std::same_as<domain_t<P>, value_type_t<I>>
+        J count_if(I f, I l, P p, J j)
+        {
+            for_each(f, l, [&](const domain_t<P>& x)
+            {
+                if (p(x))
+                {
+                    ++j;
+                }
+            }); 
+            return j;
+        }

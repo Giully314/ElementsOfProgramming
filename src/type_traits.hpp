@@ -78,8 +78,16 @@ namespace eop
         using type = size_t;
     };
 
+
+    template <typename I>
+        requires std::is_object_v<std::remove_cvref_t<typename I::distance_type>> 
+    struct distance_type
+    {
+        using type =  I::distance_type;
+    };
+
     template <typename F>
-    using distance_type_t = distance_type<F>::type; 
+    using distance_type_t = typename distance_type<F>::type; 
 
     //**************** DISTANCE TYPE ******************
 
@@ -95,9 +103,23 @@ namespace eop
     };
 
     template <typename T>
-    using quotient_type_t = quotient_type<T>::type; 
+    using quotient_type_t = typename quotient_type<T>::type; 
 
     //**************** QUOTIENT TYPE ******************
+
+
+    //**************** VALUE TYPE ******************
+
+    template <typename T>
+    struct value_type
+    {
+        using type = T::value_type;
+    };
+
+    template <typename T>
+    using value_type_t = typename value_type<T>::type;
+
+    //**************** VALUE TYPE ******************
 
 
     //**************** OUTPUT ARGS ********************
