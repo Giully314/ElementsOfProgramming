@@ -1,0 +1,1 @@
+See the implementation of find_mismatch_n in algorithms.hpp.

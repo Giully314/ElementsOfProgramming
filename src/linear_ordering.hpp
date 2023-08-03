@@ -18,40 +18,10 @@ so we can write a better algorithm using the assumption.
 #include "type_traits.hpp"
 #include "function_concepts.hpp"
 #include "ordering_concepts.hpp"
+#include "relations.hpp"
 
 namespace eop
 {   
-    // if strict true we just use the relation R
-    // if strict is false we use the complement of converse !r(b, a).
-    template <bool strict, typename R>
-        requires relation<R>
-    struct compare_strict_or_reflexive;
-
-
-    template <typename R>
-        requires relation<R>
-    struct compare_strict_or_reflexive<true, R> // strict
-    {   
-        constexpr
-        bool operator()(const domain_t<R>& a, const domain_t<R>& b, R r)
-        {
-            return r(a, b);
-        }
-    };
-
-
-    template <typename R>
-        requires relation<R>
-    struct compare_strict_or_reflexive<false, R> // reflexive
-    {   
-        constexpr
-        bool operator()(const domain_t<R>& a, const domain_t<R>& b, R r)
-        {
-            return !r(b, a);
-        }
-    };
-
-
     
     struct Ordering
     {

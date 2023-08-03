@@ -101,9 +101,9 @@ namespace eop
     */
 
     /*
-    property(I: readalbe)
+    property(I: readable)
         requires iterator(I)
-    readable_bound_range: I x I
+    readable_bounded_range: I x I
         (f, l) -> bounded_range(f, l) && i £ [f, l) source(i) is defined
     */
 
