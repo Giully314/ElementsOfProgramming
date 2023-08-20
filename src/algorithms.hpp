@@ -61,6 +61,7 @@ DESCRIPTION:
 #include "relations.hpp"
 #include "pair.hpp"
 #include "number.hpp"
+#include "iterator.hpp"
 
 namespace eop
 {
@@ -197,7 +198,19 @@ namespace eop
         return Pair<I, distance_type_t<I>>{f, n};
     }
 
-    
+
+    // Wrong, make it right.
+    // Precondition: readable_bounded_range(f, l)
+    // Postcondition: if not found return f, if found return successor(i)
+    template <bidirectional_iterator I, unary_predicate P>
+        requires std::same_as<domain_t<P>, value_type_t<I>>
+    constexpr
+    I find_backward_if(I f, I l, P p)
+    {
+        while (l != f && !p(*(--l)));
+        return l;
+    }
+
 
     // Precondition: readable_bounded_range(f, l)
     template <readable_iterator I, unary_predicate P>
@@ -742,6 +755,29 @@ namespace eop
         return f;
     }
 
+     // Precondition: readable_bounded_range(f, l)
+    template <forward_iterator I, relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    constexpr 
+    I find_adjacent_mismatch(I f, I l, R r)
+    {
+        if (f == l)
+        {
+            return l;
+        }
+
+        // Note that we can do a copy of the iterator because we are using the overloaded version with 
+        // forward_iterator which assures the regularity of the successor function.         
+        I t;
+        do
+        {
+            t = f;
+            ++f;
+        } while (f != l && r(*t, *f));
+        return f;
+    }
+
+
     // Precondition: readable_weak_range(f, n)
     template <readable_iterator I, relation R>
         requires std::same_as<value_type_t<I>, domain_t<R>>
@@ -832,7 +868,7 @@ namespace eop
     // Precondition: readable_bounded_range(f, l)
     // Returns true if any value that satisfies the predicate follow every value that doesn't satisfy 
     // the predicate.
-    template <readable_iterator I, predicate P> 
+    template <readable_iterator I, unary_predicate P> 
         requires std::same_as<value_type_t<I>, domain_t<P>>
     constexpr
     bool partitioned(I f, I l, P r)
@@ -841,7 +877,7 @@ namespace eop
     }
 
     // Precondition: readable_counted_range(f, l)
-    template <readable_iterator I, predicate P> 
+    template <readable_iterator I, unary_predicate P> 
         requires std::same_as<value_type_t<I>, domain_t<P>>
     constexpr
     bool partitioned_n(I f, distance_type_t<I> n, P r)
@@ -865,7 +901,130 @@ namespace eop
     }
 
 
+    // Precondition: readable_counted_range(f, n) && partitioned_n(f, n, p)
+    template <forward_iterator I, unary_predicate P>
+        requires std::same_as<value_type_t<I>, domain_t<P>>
+    constexpr
+    I partition_point_n(I f, distance_type_t<I> n, P p)
+    {
+        while (!Integer::is_zero(n))
+        {
+            distance_type_t<I> h = Integer::half_nonnegative(n);
+            I m = f + h;   
+            if (p(*m))
+            {
+                n = h;
+            }
+            else
+            {
+                n = n - (h + 1);
+                f = ++m;
+            }
+        }
+        return f;
+    }
+
+
+    // Precondition: readable_bounded_range(f, n) && partitioned_n(f, n, p)
+    template <forward_iterator I, unary_predicate P>
+        requires std::same_as<value_type_t<I>, domain_t<P>>
+    constexpr
+    I partition_point(I f, distance_type_t<I> n, P p)
+    {
+        return partition_point_n(f, l - f, p);
+    }
+
+
+    // Precondition: increasing_counted_range(f, n, r) && weak_ordering(r)
+    template <forward_iterator I, weak_ordering_relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    constexpr 
+    I lower_bound_n(I f, distance_type_t<I> n, const value_type_t<I>& a, R r)
+    {
+        lower_bound_predicate<R> p(a, r);
+        return partition_point_n(f, n, p);
+    }   
     
 
+    // Precondition: increasing_bounded_range(f, l, r) && weak_ordering(r)
+    template <forward_iterator I, weak_ordering_relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    constexpr 
+    I lower_bound(I f, I l, const value_type_t<I>& a, R r)
+    {
+        lower_bound_predicate<R> p(a, r);
+        return partition_point_n(f, l - f, p);
+    }
+
+
+    // Precondition: increasing_counted_range(f, n, r) && weak_ordering(r)
+    template <forward_iterator I, weak_ordering_relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    constexpr 
+    I upper_bound_n(I f, distance_type_t<I> n, const value_type_t<I>& a, R r)
+    {
+        upper_bound_predicate<R> p(a, r);
+        return partition_point_n(f, n, p);
+    }   
+    
+
+    // Precondition: increasing_bounded_range(f, l, r) && weak_ordering(r)
+    template <forward_iterator I, weak_ordering_relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    constexpr
+    I upper_bound(I f, I l, const value_type_t<I>& a, R r)
+    {
+        upper_bound_predicate<R> p(a, r);
+        return partition_point_n(f, l - f, p);
+    }
+
+
+    // Precondition: increasing_counted_range(f, n, r) && weak_ordering(r)
+    template <forward_iterator I, weak_ordering_relation R>
+        requires std::same_as<value_type_t<I>, domain_t<R>>
+    Pair<I, I> lower_upper_bound_n(I f, distance_type_t<I> n, const value_type_t<I>& a, R r)
+    {
+        lower_bound_predicate<R> lp(a, r);
+        upper_bound_predicate<R> up(a, r);
+        
+        while (!Integer::is_zero(n))
+        {
+            distance_type_t<I> h = Integer::half_nonnegative(n);
+            I m = f + h;   
+            if (p(*m))
+            {
+                n = h;
+            }
+            else
+            {
+                n = n - (h + 1);
+                f = ++m;
+            }
+        }
+    }
+
+
+    template <bidirectional_iterator I>
+    constexpr
+    bool is_palindrome(I f, I l)
+    {
+        if (f == l)
+        {
+            return true;
+        }
+
+        --l;
+        while (f != l)
+        {
+            if (*f++ != *l)
+            {
+                return false;
+            }
+            if (f == l--)
+            {
+                return true;
+            }
+        }
+    }
 
 } // namespace eop

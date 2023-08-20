@@ -1,0 +1,1 @@
+See the implementation of is_palindrome in algorithms.hpp.

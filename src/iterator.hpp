@@ -16,7 +16,7 @@ namespace eop
     {
         while (!Integer::is_zero(n))
         {
-            ++n;
+            --n;
             ++f;
         }
         return f;
@@ -35,4 +35,18 @@ namespace eop
         }
         return n;
     }
+
+
+    // Precondition: n >= 0 && £f s.t. weak_range(f, n) && l = f + n.
+    template <bidirectional_iterator I>
+    I operator-(I l, distance_type_t<I> n)
+    {
+        while (!Integer::is_zero(n))
+        {
+            --n;
+            --l;
+        }
+        return l;
+    }
+
 } // namespace eop

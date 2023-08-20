@@ -135,4 +135,47 @@ namespace eop
             return !r(b, a);
         }
     };
+
+
+    template <relation R>
+    struct lower_bound_predicate
+    {
+        using T = domain_t<R>;
+        const T& a;
+        R r;
+
+        constexpr 
+        lower_bound_predicate(const T& a_, R r_) : a(a_), r(r_)
+        {
+
+        }
+
+        constexpr
+        bool operator()(const T& x)
+        {
+            return !r(x, a);
+        }
+    };
+
+
+    template <relation R>
+    struct upper_bound_predicate
+    {
+        using T = domain_t<R>;
+        const T& a;
+        R r;
+
+        constexpr 
+        upper_bound_predicate(const T& a_, R r_) : a(a_), r(r_)
+        {
+
+        }
+
+        constexpr
+        bool operator()(const T& x)
+        {
+            return r(a, x);
+        }
+    };
+
 } // namespace eop
