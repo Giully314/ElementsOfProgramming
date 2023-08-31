@@ -114,6 +114,16 @@ namespace eop
         op -> if op(a, b) && op(b, c) are defined then
                 op(op(a, b), c) && op(a, op(b, c)) are defined and are equal       
     */
+
+
+
+    // Note: a descendant is a left or right children of the node x or some other children of x.
+    /*
+    property(C: bifurcate coordinate)
+    tree: C
+        x -> the descendants of x form a tree.
+    */
+
    
     // ************************ PROPERTIES *************************************************
 

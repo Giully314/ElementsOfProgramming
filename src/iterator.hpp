@@ -47,6 +47,5 @@ namespace eop
             --l;
         }
         return l;
-    }
-
+    }    
 } // namespace eop

@@ -92,6 +92,30 @@ namespace eop
     //**************** DISTANCE TYPE ******************
 
 
+    //**************** WEIGHT TYPE ******************
+
+    // TODO: make the distance type based on the sizeof the domain of F.
+
+    template <typename F>
+    struct weight_type
+    {
+        using type = size_t;
+    };
+
+
+    template <typename I>
+        requires std::is_object_v<std::remove_cvref_t<typename I::weight_type>> 
+    struct weight_type
+    {
+        using type =  I::weight_type;
+    };
+
+    template <typename F>
+    using weight_type_t = typename weight_type<F>::type; 
+
+    //**************** WEIGHT TYPE ******************
+
+
     //**************** QUOTIENT TYPE ******************
 
     // TODO: make the distance type based on the sizeof the domain of F.

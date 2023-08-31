@@ -106,6 +106,23 @@ namespace eop
             return n;
         }
 
+
+        template <totally_ordered N>
+        static constexpr 
+        [[nodiscard]]
+        N max(N a, N b)
+        {
+            return a < b ? b : a;
+        }
+
+        template <totally_ordered N>
+        static constexpr 
+        [[nodiscard]]
+        N min(N a, N b)
+        {
+            return b < a ? b : a;
+        }
+        
     };
 
 }

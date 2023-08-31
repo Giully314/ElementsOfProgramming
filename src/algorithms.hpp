@@ -63,6 +63,7 @@ DESCRIPTION:
 #include "number.hpp"
 #include "iterator.hpp"
 
+
 namespace eop
 {
     // Precondition: readable_bounded_range(f, l)

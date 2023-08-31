@@ -1,0 +1,2 @@
+No, this doesn't contradict the axioms of bidirectional coordinate. Even though it's impossible to have this 
+case if we have a tree. Also the predecessor is unique, so it is sufficient as condition to make it impossible in general?  

@@ -85,6 +85,8 @@ namespace eop
     template <typename F>
     concept unary_procedure = functional_procedure<F> && num_of_params_v<F> == 1;
 
+    template <typename F>
+    concept binary_procedure = functional_procedure<F> && num_of_params_v<F> == 2;
 
 
     template <typename F>
