@@ -266,4 +266,10 @@ namespace eop
     }
 
 
+
+    struct BidirectionalBifurcateIterator
+    {
+
+    };
+
 } // namespace eop

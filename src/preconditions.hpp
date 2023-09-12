@@ -124,6 +124,13 @@ namespace eop
         x -> the descendants of x form a tree.
     */
 
+
+    /*
+    property(C: readable)
+        requires BifurcateCoordinate(C)
+    readable_tree: C
+        x -> tree(x) && for every y £ C if reachable(x, y) then source(y) is defined.
+    */
    
     // ************************ PROPERTIES *************************************************
 
