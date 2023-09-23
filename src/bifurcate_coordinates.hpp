@@ -7,10 +7,11 @@ PURPOSE: define basic operations of bifurcate coordinates.
 */
 
 #include "type_traits.hpp"
-#include "iterator_concepts.hpp"
+#include "bifurcate_coordinate_concepts.hpp"
 #include "function_concepts.hpp"
 #include "number.hpp"
 #include "orbit_transformations.hpp"
+#include "utility_types.hpp"
 
 #include <concepts>
 
@@ -266,10 +267,14 @@ namespace eop
     }
 
 
-
-    struct BidirectionalBifurcateIterator
+    template <bidirectional_bifurcate C>
+    class BidirectionalBifurcateIterator
     {
+    public:
+           
 
+    private:
+        non_owned_ptr<C> p = nullptr;
     };
 
 } // namespace eop
